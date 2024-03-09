@@ -3,8 +3,6 @@ import Button from '@mui/material/Button';
 import './SearchBox.css'
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
-import Info from './Info';
-import { colors } from '@mui/material';
 
 export default function SearchBox({updateInfo}){
 
@@ -21,12 +19,14 @@ export default function SearchBox({updateInfo}){
             let newInfo=await getWeatherInfo();
             updateInfo(newInfo);
         }catch(err){
+            console.log(err);
             setError(true);
         }
     }
 
-    try{
-        let getWeatherInfo= async ()=>{
+
+    let getWeatherInfo= async ()=>{
+        try{
             let response=await fetch(`${URL}?q=${city}&appid=${API_Key}&units=metric`);
             let jsonRes=await response.json();
             let res={
@@ -42,17 +42,20 @@ export default function SearchBox({updateInfo}){
                 sunrise:getStringTime(jsonRes.sys.sunrise),
                 sunset:getStringTime(jsonRes.sys.sunset),
             }
-            return res;
+        return res;
+
+        }catch(err){
+            throw err;
         }
-        let getStringTime=(timestamp)=>{
-            let milSec=timestamp*1000;
-            const dateObj=new Date(milSec);
-            return (dateObj.toUTCString());
-        }
-    
-    }catch(err){
-        throw err;
+        
     }
+
+    let getStringTime=(timestamp)=>{
+        let milSec=timestamp*1000;
+        const dateObj=new Date(milSec);
+        return (dateObj.toUTCString());
+    }
+
     
 
     let handleChange=(evt)=>{
