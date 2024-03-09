@@ -5,26 +5,43 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
 import Info from './Info';
 
-export default function SearchBox(){
+export default function SearchBox({updateInfo}){
 
     let [city,setCity]=useState('');
-    let [info,setInfo]=useState({name:"Pune", temp:"22.3", maxTemp:"33.5", minTemp:"20.3", humidity:"11", pressure:"1013", weather:"clear", feelsLike:"28.93"});
 
     let URL='https://api.openweathermap.org/data/2.5/weather';
     let API_Key='cc2fda3c424a409553c25bbb09b4189d';
 
-    let handleSubmit=(evt)=>{
+    let handleSubmit=async (evt)=>{
         evt.preventDefault();
         setCity("");
-        getWeatherInfo();
+        let newInfo=await getWeatherInfo();
+        updateInfo(newInfo);
     }
 
     let getWeatherInfo= async ()=>{
-        // let response=await fetch(`${URL}?q=${city}&appid=${API_Key}&units=metric`);
-        // let res=await response.json();
-        let res={name:"Pune", temp:"22.3", maxTemp:"33.5", minTemp:"20.3", humidity:"11", pressure:"1013", weather:"clear", feelsLike:"28.93"};
-        setInfo(res);
-        console.log(res);
+        let response=await fetch(`${URL}?q=${city}&appid=${API_Key}&units=metric`);
+        let jsonRes=await response.json();
+        let res={
+            name:jsonRes.name,
+            temp:jsonRes.main.temp,
+            maxTemp:jsonRes.main.temp_max,
+            minTemp:jsonRes.main.temp_min,
+            humidity:jsonRes.main.humidity,
+            pressure:jsonRes.main.pressure,
+            weather:jsonRes.weather[0].main,
+            feelsLike:jsonRes.main.feels_like,
+            country:jsonRes.sys.country,
+            sunrise:getStringTime(jsonRes.sys.sunrise),
+            sunset:getStringTime(jsonRes.sys.sunset),
+        }
+        return res;
+    }
+
+    let getStringTime=(timestamp)=>{
+        let milSec=timestamp*1000;
+        const dateObj=new Date(milSec);
+        return (dateObj.toUTCString());
     }
 
     let handleChange=(evt)=>{

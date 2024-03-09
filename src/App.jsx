@@ -1,22 +1,11 @@
 import './App.css'
-import SearchBox from './SearchBox'
-import Info from './Info'
-import { useState } from 'react';
-
+import WeatherApp from './WeatherApp';
 function App() {
-  let [info, setInfo]=useState('');
 
-  let handleChange=(res)=>{
-    setInfo(res);
-    console.log(info);
-  }
 
   return (
-    <div className='main'>
-      <SearchBox></SearchBox>
-      <Info ></Info>
-    </div>
-  )
+    <WeatherApp></WeatherApp>
+  );
 }
 
 export default App

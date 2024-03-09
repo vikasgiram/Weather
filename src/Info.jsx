@@ -5,8 +5,7 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import "./Info.css"
 
-export default function Info(){
-    let info={name:"Pune", temp:"22.3", maxTemp:"33.5", minTemp:"20.3", humidity:"11", pressure:"1013", weather:"clear", feelsLike:"28.93"};
+export default function Info({info}){
     return(
     <div className='infoBox'>
         
