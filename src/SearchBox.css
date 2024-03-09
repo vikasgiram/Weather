@@ -5,3 +5,17 @@
 .text-field{
     margin-right: 1rem;
 }
+.searchBox{
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+}
+
+.btn{
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
